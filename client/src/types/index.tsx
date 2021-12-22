@@ -1,0 +1,1 @@
+export type ComponentWithChildProps = React.PropsWithChildren<{ title?: string }>;
