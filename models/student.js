@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate({ Course }) {
       // define association here
 
-      this.belongsToMany(Course, { through: 'Student_Course' });
+      this.belongsToMany(Course, { through: 'Student_Course', as: 'Courses' });
     }
 
     toJSON() {

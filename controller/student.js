@@ -87,6 +87,7 @@ exports.getStudentsWithPagination = asyncMiddleware(async (req, res) => {
     where: condition,
     limit,
     offset,
+    include: 'Courses',
   });
 
   const response = getPaginatedData({

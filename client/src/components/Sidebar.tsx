@@ -13,27 +13,25 @@ import {
     useDisclosure,
     BoxProps,
     FlexProps,
+    Img,
 } from '@chakra-ui/react';
 import {
-    FiHome,
-    FiTrendingUp,
-    FiCompass,
-    FiStar,
-    FiSettings,
     FiMenu,
 } from 'react-icons/fi';
 import { BsPeopleFill } from 'react-icons/bs'
 import { SiGoogleclassroom } from 'react-icons/si'
 import { IconType } from 'react-icons';
 import { ReactText } from 'react';
+import { Link as ReactLink } from 'react-router-dom'
 
 interface LinkItemProps {
     name: string;
     icon: IconType;
+    link: string
 }
 const LinkItems: Array<LinkItemProps> = [
-    { name: 'Students', icon: BsPeopleFill },
-    { name: 'Courses', icon: SiGoogleclassroom },
+    { name: 'Students', icon: BsPeopleFill, link: '/students' },
+    { name: 'Courses', icon: SiGoogleclassroom, link: '/courses' },
 
 ];
 
@@ -71,6 +69,7 @@ interface SidebarProps extends BoxProps {
 }
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
+
     return (
         <Box
             bg={useColorModeValue('white', 'gray.900')}
@@ -81,13 +80,14 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
             h="full"
             {...rest}>
             <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-                <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-                    University of life
-                </Text>
+                <Box>
+
+                    <Img src='https://mainteny.com/www/svg/time-blue.svg' />
+                </Box>
                 <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
             </Flex>
             {LinkItems.map((link) => (
-                <NavItem key={link.name} icon={link.icon}>
+                <NavItem key={link.name} link={link.link} icon={link.icon}>
                     {link.name}
                 </NavItem>
             ))}
@@ -98,10 +98,12 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 interface NavItemProps extends FlexProps {
     icon: IconType;
     children: ReactText;
+    link: string
 }
-const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
+const NavItem = ({ icon, children, link, ...rest }: NavItemProps) => {
+
     return (
-        <Link href="#" style={{ textDecoration: 'none' }}>
+        <Link as={ReactLink} to={link} style={{ textDecoration: 'none' }}>
             <Flex
                 align="center"
                 p="4"
@@ -153,9 +155,11 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                 icon={<FiMenu />}
             />
 
-            <Text fontSize="2xl" ml="8" fontFamily="monospace" fontWeight="bold">
-                Logo
-            </Text>
+
+            <Box ml={8}>
+
+                <Img src='https://mainteny.com/www/svg/time-blue.svg' />
+            </Box>
         </Flex>
     );
 };

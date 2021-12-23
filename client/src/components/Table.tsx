@@ -7,51 +7,67 @@ import {
     Th,
     Td,
     TableCaption,
+    Spinner,
+    Center,
+    Flex,
+    Button,
+    Box
+
 } from '@chakra-ui/react'
 
-interface TableHeader {
-    text: string,
-    id: number
+import { TableHeader, TableBody } from '../types/index'
+
+import { useNavigate } from 'react-router-dom'
+
+interface TableComponent {
+    tableHeadings: TableHeader[],
+    tableBody: TableBody[],
+    loading: boolean
+
 }
 
-const tableHeader: TableHeader[] = [{ text: "To convert into", id: 1 }, { id: 2, text: "into" }, { id: 3, text: "multiply by" }]
+const TableComponent = ({ tableBody, tableHeadings, loading }: TableComponent) => {
+    const navigate = useNavigate()
 
-const TableComponent = () => {
     return (
+
         <Table variant='striped' colorScheme='blue'>
-            <TableCaption>Imperial to metric conversion factors</TableCaption>
+            {/* <TableCaption>Imperial to metric conversion factors</TableCaption> */}
             <Thead>
                 <Tr>
-                    {tableHeader.map((header) => (
-                        <Th >{header.text} </Th>
+                    {tableHeadings.map((header) => (
+                        <Th isNumeric={header.id === 3} key={header.id} >{header.text} </Th>
                     ))}
 
                 </Tr>
             </Thead>
+
+
             <Tbody>
-                <Tr cursor={'pointer'}>
-                    <Td>inches</Td>
-                    <Td>millimetres (mm)</Td>
-                    <Td>25.4</Td>
-                </Tr>
-                <Tr>
-                    <Td>feet</Td>
-                    <Td>centimetres (cm)</Td>
-                    <Td>30.48</Td>
-                </Tr>
-                <Tr>
-                    <Td>yards</Td>
-                    <Td>metres (m)</Td>
-                    <Td>0.91444</Td>
-                </Tr>
+                {
+                    tableBody?.map((data) => (
+
+
+                        <Tr onClick={() => navigate({ pathname: `/students/${data.UserId}` })} key={data.Email} cursor={'pointer'}>
+                            <Td>{data.Name}</Td>
+                            <Td>{data.Email}</Td>
+                            <Td isNumeric>{data.Courses?.length ?? 0} </Td>
+                        </Tr>
+
+                    ))}
+
             </Tbody>
+
+
             <Tfoot>
                 <Tr>
-                    <Th>To convert</Th>
-                    <Th>into</Th>
-                    <Th>multiply by</Th>
+                    {tableHeadings.map((header) => (
+                        <Th isNumeric={header.id === 3} key={header.id} >{header.text} </Th>
+                    ))}
+
                 </Tr>
             </Tfoot>
+
         </Table>
     )
 }
