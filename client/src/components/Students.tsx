@@ -2,7 +2,7 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import Layout from "./Layout"
 import Table from './Table'
-import { TableBody, TableHeader } from "../types/index"
+import { StudentsProps, TableHeader } from "../types/index"
 import { Button, Flex } from "@chakra-ui/react"
 
 
@@ -10,7 +10,7 @@ interface StudentProps {
     CurrentPage: number,
     TotalPages: number,
     TotalCount: number,
-    Students: TableBody[]
+    Students: StudentsProps[]
 }
 
 

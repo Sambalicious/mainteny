@@ -101,7 +101,9 @@ exports.getStudentsWithPagination = asyncMiddleware(async (req, res) => {
 });
 
 exports.addCourse = asyncMiddleware(async (req, res) => {
-  let student = Student.findOne({ where: { Email } });
+  let { UserId } = req.params;
+  let { CourseId } = req.body;
+  let student = await Student.findOne({ where: { UserId } });
 
   if (!student) {
     return res.status(404).json(
@@ -112,7 +114,7 @@ exports.addCourse = asyncMiddleware(async (req, res) => {
     );
   }
 
-  let course = Course.findOne({ where: { Course } });
+  let course = await Course.findOne({ where: { id: CourseId } });
   if (!course) {
     return res
       .status(404)
@@ -122,7 +124,17 @@ exports.addCourse = asyncMiddleware(async (req, res) => {
   }
   student.addCourse(course);
 
-  let response = await student.getCourse();
-
+  let response = await student.getCourses();
+  
   return res.status(200).json(apiResponse({ code: 200, data: response }));
+});
+
+exports.getStudentData = asyncMiddleware(async (req, res) => {
+  let { UserId } = req.params;
+  let student = await Student.findOne({
+    where: { UserId },
+    include: 'Courses',
+  });
+
+  return res.status(200).json(apiResponse({ code: 200, data: student }));
 });

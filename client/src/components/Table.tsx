@@ -15,18 +15,18 @@ import {
 
 } from '@chakra-ui/react'
 
-import { TableHeader, TableBody } from '../types/index'
+import { TableHeader, CourseProps, StudentsProps } from '../types/index'
 
 import { useNavigate } from 'react-router-dom'
 
-interface TableComponent {
+interface TableComponent<T> {
     tableHeadings: TableHeader[],
-    tableBody: TableBody[],
+    tableBody?: T[],
     loading: boolean
 
 }
 
-const TableComponent = ({ tableBody, tableHeadings, loading }: TableComponent) => {
+const TableComponent = ({ tableBody, tableHeadings, loading }: TableComponent<StudentsProps>) => {
     const navigate = useNavigate()
 
     return (

@@ -41,3 +41,11 @@ exports.createCourse = asyncMiddleware(async (req, res) => {
     .status(200)
     .json(apiResponse({ code: 200, data: { Course: course } }));
 });
+
+exports.getCourses = asyncMiddleware(async (req, res) => {
+  let courses = await Course.findAll();
+
+  return res
+    .status(200)
+    .json(apiResponse({ code: 200, data: { Courses: courses } }));
+});

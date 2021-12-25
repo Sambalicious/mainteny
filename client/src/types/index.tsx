@@ -14,11 +14,20 @@ export interface CoursesProps {
 }
 
 
-export interface TableBody {
-    Email: string,
-    Name: string,
+export interface StudentsProps {
+    Email?: string,
+    Name?: string,
     createdAt: string,
     updatedAt: string,
-    UserId: string,
+    UserId?: string,
     Courses?: CoursesProps[]
+}
+
+
+export interface CourseProps {
+    Course?: string,
+    Lecturer?: string,
+    id?: number,
+    createdAt: string,
+    updatedAt: string
 }
