@@ -73,7 +73,7 @@ This project uses postgres SQL DATABASE, therefore the following environment var
 #### Login to dashboard
 
 ```http
-  Post /api/login
+  POST /api/login
 ```
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
