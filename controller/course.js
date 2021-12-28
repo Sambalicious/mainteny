@@ -43,7 +43,7 @@ exports.createCourse = asyncMiddleware(async (req, res) => {
 });
 
 exports.getCourses = asyncMiddleware(async (req, res) => {
-  let courses = await Course.findAll();
+  let courses = await Course.findAll({ include: 'Students' });
 
   return res
     .status(200)

@@ -16,7 +16,7 @@ module.exports = function (req, res, next) {
   try {
     const decodedToken = jwt.verify(token, process.env.SECRET_TOKEN);
     req.user = decodedToken.user;
-
+    console.log('i need you', decodedToken.user);
     return next();
   } catch (error) {
     res

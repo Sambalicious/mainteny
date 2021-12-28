@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       this.belongsToMany(Student, {
         through: 'Student_Course',
-        as: 'students',
+        as: 'Students',
       });
     }
   }
