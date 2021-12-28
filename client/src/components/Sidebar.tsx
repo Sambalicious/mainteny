@@ -31,7 +31,6 @@ interface LinkItemProps {
 }
 const LinkItems: Array<LinkItemProps> = [
     { name: 'Students', icon: BsPeopleFill, link: '/students' },
-    { name: 'Courses', icon: SiGoogleclassroom, link: '/courses' },
 
 ];
 

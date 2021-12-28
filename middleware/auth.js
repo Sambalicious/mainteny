@@ -3,6 +3,7 @@ const { apiResponse } = require('../utils/apiResponse');
 
 module.exports = function (req, res, next) {
   const token = req.header('x-access-token');
+  console.log({ token });
   if (!token) {
     return res.status(401).json(
       apiResponse({
@@ -13,7 +14,7 @@ module.exports = function (req, res, next) {
   }
 
   try {
-    const decodedToken = jwt.verify(token, process.env.SECRET_TOKEN); 
+    const decodedToken = jwt.verify(token, process.env.SECRET_TOKEN);
     req.user = decodedToken.user;
 
     return next();

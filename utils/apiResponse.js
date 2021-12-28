@@ -8,7 +8,7 @@ exports.apiResponse = ({ code = 200, data = null, errorMessage = '' }) => {
   } else {
     response = {
       Status: 'ERROR',
-      Message: errorMessage,
+      message: errorMessage,
     };
   }
 

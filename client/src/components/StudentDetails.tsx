@@ -1,36 +1,104 @@
 import { Box, VStack, Text, Button, Center, Spinner, HStack, SimpleGrid } from "@chakra-ui/react"
-import axios from "axios"
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import { CourseProps, StudentsProps } from "../types"
+import { CourseProps, ResponseError, StudentsProps } from "../types"
 import { useToast } from '@chakra-ui/react'
 
 interface ButtonIDProps {
     id: number | null
 }
 
+interface IData {
+    Data: object
+}
+
 const StudentDetails = () => {
-
     const toast = useToast()
-
     const { id } = useParams();
-
     const [studentData, setStudentData] = useState({} as StudentsProps)
     const [coursesData, setCoursesData] = useState([] as CourseProps[])
     const [loading, setLoading] = useState(false)
     const [buttonLoadingId, setButtonLoadingId] = useState({} as ButtonIDProps)
+
     const fetchStudentData = async () => {
-        // setLoading(true)
-        let response = await axios.get(`/api/students/${id}`);
-        setStudentData(response.data.Data)
+        setLoading(true)
+
+
+        try {
+            let response = await axios.get(`/api/students/${id}`);
+
+            setStudentData(response.data.Data)
+
+
+
+            let { Data } = response.data
+            console.log(Data)
+        } catch (error) {
+            return toast({
+                title: 'Course Added.',
+                description: "This Course has been added.",
+                status: 'error',
+                duration: 3000,
+                isClosable: true,
+            })
+
+            //  console.log(error.message)
+        }
+
+
+
         setLoading(false)
     }
 
     const getCourses = async () => {
-        setLoading(true)
-        let response = await axios.get('/api/courses');
 
-        setCoursesData(response.data.Data?.Courses)
+        setLoading(true)
+
+
+
+        const config: AxiosRequestConfig = {
+            method: "get",
+            url: '/api/courses',
+
+            headers: {
+                "Content-Type": "application/json",
+            },
+
+        }
+
+
+        try {
+            let response = await axios(config);
+            console.log(response);
+
+
+            setCoursesData(response.data.Data?.Courses)
+
+
+
+
+        } catch (error) {
+
+            let err = error as Error;
+            console.log(err.message)
+            console.log(err.response)
+            if (error instanceof ResponseError) {
+                console.log(error.message)
+            }
+
+
+            return toast({
+                title: (error as Error).message,
+                description: "Someting went wrong on here",
+                status: 'error',
+                duration: 3000,
+                isClosable: true,
+                // position: "bottom-left"
+            })
+            // console.log(error.message)
+        }
+
         setLoading(false)
     }
 
@@ -43,14 +111,16 @@ const StudentDetails = () => {
 
     const addCourse = async (course: CourseProps) => {
         setButtonLoadingId({ id: course.id! });
-        let data = {
-            CourseId: course.id
-        }
 
-        let response = await axios.post(`/api/students/${id}`, data)
+        try {
+            let data = {
+                CourseId: course.id
+            }
 
-        console.log({ response: response.data })
-        if (response.data.Status === "SUCCESS") {
+            let response = await axios.post(`/api/students/${id}`, data)
+
+            console.log({ response: response.data })
+
             toast({
                 title: 'Course Added.',
                 description: "This Course has been added.",
@@ -61,6 +131,11 @@ const StudentDetails = () => {
             })
 
             fetchStudentData()
+
+
+
+        } catch (error) {
+            console.log(error)
         }
 
 
@@ -71,7 +146,7 @@ const StudentDetails = () => {
     return (
         <Box p={4}>
 
-            {loading ? (<Center>
+            {loading ? (<Center minH={'100vh'}>
                 <Spinner />
             </Center>) : (
                 <Box>
@@ -93,7 +168,7 @@ const StudentDetails = () => {
 
                     <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
                         {studentData.Courses?.length ? studentData.Courses.map((data) => (
-                            <Box>
+                            <Box key={data.id}>
                                 <HStack>
                                     <Text>Course Title: </Text>
                                     <Text>{data.Course} </Text>
@@ -110,12 +185,12 @@ const StudentDetails = () => {
                     <Box mt={10}>
 
 
-                        <Text mb={5} textAlign={'center'}>Available Courses</Text>
+                        <Text mb={3} textAlign={'center'}>Available Courses(s)</Text>
                         <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
 
 
                             {coursesData?.map((data) => (
-                                <Box my={8} key={data.Course} >
+                                <Box my={8} key={data.id} >
                                     <HStack>
                                         <Text>Course Title: </Text>
                                         <Text>{data.Course} </Text>

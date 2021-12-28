@@ -1,3 +1,5 @@
+// import { Response } from "express";
+
 export type ComponentWithChildProps = React.PropsWithChildren<{ title?: string }>;
 
 
@@ -8,10 +10,6 @@ export interface TableHeader {
     id: number
 }
 
-export interface CoursesProps {
-    Course: string,
-    Lecturer: string
-}
 
 
 export interface StudentsProps {
@@ -20,14 +18,19 @@ export interface StudentsProps {
     createdAt: string,
     updatedAt: string,
     UserId?: string,
-    Courses?: CoursesProps[]
+    Courses?: CourseProps[]
 }
 
 
 export interface CourseProps {
     Course?: string,
     Lecturer?: string,
-    id?: number,
+    id: number,
     createdAt: string,
     updatedAt: string
+}
+
+
+export class ResponseError extends Error {
+    response?: Response
 }
