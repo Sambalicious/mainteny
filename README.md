@@ -70,6 +70,16 @@ This project uses postgres SQL DATABASE, therefore the following environment var
 
 ## API Reference
 
+#### Login to dashboard
+
+```http
+  POST /api/login
+```
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `Email` | `string` | **Required**. User email |
+| `Password` | `string`| **Required**. User password |
+
 #### Get all courses
 
 ```http
