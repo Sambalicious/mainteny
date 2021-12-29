@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import Layout from './Layout';
-//import Table from './Table';
 import {
   Table,
   Thead,
@@ -34,7 +33,6 @@ const tableHeadings = [
 ];
 const Students = () => {
   const navigate = useNavigate();
-
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({});
@@ -56,7 +54,6 @@ const Students = () => {
       setLoading(false);
       return toast({
         title: error.response.data.message,
-        //description: 'Something went wrong.',
         status: 'error',
         duration: 3000,
         isClosable: true,
@@ -89,7 +86,6 @@ const Students = () => {
       setLoading(false);
       return toast({
         title: error.response.data.message,
-        //description: 'Something went wrong.',
         status: 'error',
         duration: 3000,
         isClosable: true,

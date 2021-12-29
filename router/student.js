@@ -7,7 +7,7 @@ const {
 const auth = require('../middleware/auth');
 const router = require('express').Router();
 
-router.post('/', createStudent);
+router.post('/', [auth], createStudent);
 router.get('/', [auth], getStudentsWithPagination);
 router.get('/:UserId', [auth], getStudentData);
 router.post('/:UserId', [auth], addCourse);

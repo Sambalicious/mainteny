@@ -79,26 +79,24 @@ const StudentDetails = () => {
 
       let response = await axios.post(`/api/students/${id}`, data);
 
-      console.log({ response: response.data });
+      if (response) {
+        toast({
+          title: 'Course Added.',
+          description: 'This Course has been added.',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+          // position: "bottom-left"
+        });
 
-      toast({
-        title: 'Course Added.',
-        description: 'This Course has been added.',
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
-        // position: "bottom-left"
-      });
-
-      fetchStudentData();
+        fetchStudentData();
+      }
     } catch (error) {
       console.log(error);
     }
 
     setButtonLoadingId({ id: null });
   };
-
-  console.log(loading);
 
   return (
     <Box p={4}>
@@ -148,27 +146,33 @@ const StudentDetails = () => {
               Available Courses(s)
             </Text>
             <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
-              {coursesData?.map((data) => (
-                <Box my={8} key={data.id}>
-                  <HStack>
-                    <Text>Course Title: </Text>
-                    <Text>{data.Course} </Text>
-                  </HStack>
-                  <HStack>
-                    <Text> Lecturer Name:</Text>
-                    <Text>{data.Lecturer} </Text>
-                  </HStack>
+              {coursesData?.length > 0 ? (
+                coursesData?.map((data) => (
+                  <Box my={8} key={data.id}>
+                    <HStack>
+                      <Text>Course Title: </Text>
+                      <Text>{data.Course} </Text>
+                    </HStack>
+                    <HStack>
+                      <Text> Lecturer Name:</Text>
+                      <Text>{data.Lecturer} </Text>
+                    </HStack>
 
-                  <Button
-                    isLoading={buttonLoadingId.id === data.id}
-                    mt={4}
-                    colorScheme={'blue'}
-                    onClick={() => addCourse(data)}
-                  >
-                    Add Course{' '}
-                  </Button>
-                </Box>
-              ))}
+                    <Button
+                      isLoading={buttonLoadingId.id === data.id}
+                      mt={4}
+                      colorScheme={'blue'}
+                      onClick={() => addCourse(data)}
+                    >
+                      Add Course{' '}
+                    </Button>
+                  </Box>
+                ))
+              ) : (
+                <Text>
+                  There are no available courses yet. Please create some.
+                </Text>
+              )}
             </SimpleGrid>
           </Box>
         </Box>

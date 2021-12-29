@@ -4,7 +4,6 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Checkbox,
   Stack,
   Link,
   Button,
@@ -34,11 +33,9 @@ export default function SimpleCard() {
       let response = await axios.post('/api/register', data);
       setLoading(false);
       if (response) {
-        let { AccessToken } = response.data.Data;
-        localStorage.setItem('accessToken', AccessToken);
         navigate({ pathname: `/` });
         return toast({
-          title: 'Registration successful',
+          title: 'Registration successful. Please Login',
           status: 'success',
           duration: 3000,
           isClosable: true,

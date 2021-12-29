@@ -1,4 +1,3 @@
-import { ReactNode } from 'react';
 import {
   IconButton,
   Box,
@@ -8,18 +7,14 @@ import {
   useColorModeValue,
   Link,
   Drawer,
-  DrawerContent,
-  Text,
-  useDisclosure,
-  BoxProps,
-  FlexProps,
   Img,
+  DrawerContent,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { FiMenu } from 'react-icons/fi';
-import { BsPeople, BsPeopleFill } from 'react-icons/bs';
+import { BsPeopleFill } from 'react-icons/bs';
 import { SiBookstack } from 'react-icons/si';
-import { IconType } from 'react-icons';
-import { ReactText } from 'react';
+
 import { Link as ReactLink } from 'react-router-dom';
 
 const LinkItems = [
