@@ -58,17 +58,27 @@ Start the server
 
 To run this project, you will need to add the following environment variables to your .env file
  
-This project uses postgres SQL DATABASE, therefore the following environment variables will be need for connection.
-`PORT `
-`DB_HOST`
-`DB_USERNAME`
-`DB_PASSWORD`
-`DATABASE`
-`SECRET_TOKEN`
+This project uses postgres SQL DATABASE boostrapped by sequelize, therefore the following environment variables will be needed for DB connection.
+`PORT `: `server connection port e.g 8081`
+`DB_HOST`: `postgres database Host url e.g 127.0.0.1`
+`DB_USERNAME`: `postgres database userName e.g Samuel`
+`DB_PASSWORD`: `postgres databse password e,g 123455`
+`DATABASE`: `database environment e.g database_development`
+`SECRET_TOKEN`: `json web token (jwt) secret e.g secretToken`
 
 
 
 ## API Reference
+
+#### Create a user 
+
+```http
+  POST /api/register
+```
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `Email` | `string` | **Required**. User email |
+| `Password` | `string`| **Required**. User password |
 
 #### Login to dashboard
 
