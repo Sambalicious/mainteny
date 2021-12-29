@@ -18,10 +18,12 @@ import {
   Input,
   ModalBody,
   ModalFooter,
+  Box,
+  Text,
 } from '@chakra-ui/react';
 import { Button, Flex, useToast } from '@chakra-ui/react';
 import Layout from './Layout';
-import axiosInstance from '../utils/axios';
+import axiosInstance from '../utils/axiosInstance';
 
 const tableHeadings = [
   { text: 'Course Title', id: 1 },
@@ -141,38 +143,47 @@ const Courses = () => {
           </ModalContent>
         </Modal>
       )}
-      <Table variant="striped" colorScheme="blue">
-        {/* <TableCaption>Imperial to metric conversion factors</TableCaption> */}
-        <Thead>
-          <Tr>
-            {tableHeadings.map((header) => (
-              <Th isNumeric={header.id === 3} key={header.id}>
-                {header.text}{' '}
-              </Th>
-            ))}
-          </Tr>
-        </Thead>
 
-        <Tbody>
-          {data?.Courses?.map((data) => (
-            <Tr key={data.Course}>
-              <Td>{data.Course}</Td>
-              <Td>{data.Lecturer}</Td>
-              <Td isNumeric>{data?.Students?.length} </Td>
-            </Tr>
-          ))}
-        </Tbody>
+      {data?.Courses?.length > 0 ? (
+        <Box>
+          <Table variant="striped" colorScheme="blue">
+            {/* <TableCaption>Imperial to metric conversion factors</TableCaption> */}
+            <Thead>
+              <Tr>
+                {tableHeadings.map((header) => (
+                  <Th isNumeric={header.id === 3} key={header.id}>
+                    {header.text}{' '}
+                  </Th>
+                ))}
+              </Tr>
+            </Thead>
 
-        <Tfoot>
-          <Tr>
-            {tableHeadings.map((header) => (
-              <Th isNumeric={header.id === 3} key={header.id}>
-                {header.text}{' '}
-              </Th>
-            ))}
-          </Tr>
-        </Tfoot>
-      </Table>
+            <Tbody>
+              {data?.Courses?.map((data) => (
+                <Tr key={data.Course}>
+                  <Td>{data.Course}</Td>
+                  <Td>{data.Lecturer}</Td>
+                  <Td isNumeric>{data?.Students?.length} </Td>
+                </Tr>
+              ))}
+            </Tbody>
+
+            <Tfoot>
+              <Tr>
+                {tableHeadings.map((header) => (
+                  <Th isNumeric={header.id === 3} key={header.id}>
+                    {header.text}{' '}
+                  </Th>
+                ))}
+              </Tr>
+            </Tfoot>
+          </Table>
+        </Box>
+      ) : (
+        <Text textAlign={'center'} my={10}>
+          No course data yet. Please create a course
+        </Text>
+      )}
     </Layout>
   );
 };

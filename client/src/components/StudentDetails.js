@@ -8,12 +8,12 @@ import {
   HStack,
   SimpleGrid,
 } from '@chakra-ui/react';
-import axios from '../utils/axios';
+import axios from '../utils/axiosInstance';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useToast } from '@chakra-ui/react';
-import axiosInstance from '../utils/axios';
+import axiosInstance from '../utils/axiosInstance';
 
 const StudentDetails = () => {
   const toast = useToast();

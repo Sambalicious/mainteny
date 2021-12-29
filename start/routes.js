@@ -1,4 +1,5 @@
 const auth = require('../router/auth');
+const user = require('../router/user');
 const student = require('../router/student');
 const course = require('../router/course');
 
@@ -12,6 +13,7 @@ module.exports = function (app) {
   app.use(cors());
   app.use(express.json());
   app.use('/api/login', auth);
+  app.use('/api/register', user);
   app.use('/api/students', student);
   app.use('/api/courses', course);
   app.use(handle404Error);

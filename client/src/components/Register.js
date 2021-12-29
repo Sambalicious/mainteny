@@ -15,14 +15,15 @@ import {
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link as ReactLink } from 'react-router-dom';
 export default function SimpleCard() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const toast = useToast();
   const navigate = useNavigate();
-  const loginUser = async () => {
+
+  const createUser = async () => {
     setLoading(false);
     try {
       const data = {
@@ -30,15 +31,14 @@ export default function SimpleCard() {
         Password: password,
       };
 
-      let response = await axios.post('/api/login', data);
+      let response = await axios.post('/api/register', data);
       setLoading(false);
-      console.log(response.data.Data);
       if (response) {
         let { AccessToken } = response.data.Data;
         localStorage.setItem('accessToken', AccessToken);
-        navigate({ pathname: `/students/` });
+        navigate({ pathname: `/` });
         return toast({
-          title: 'Login Success',
+          title: 'Registration successful',
           status: 'success',
           duration: 3000,
           isClosable: true,
@@ -63,10 +63,7 @@ export default function SimpleCard() {
     >
       <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
         <Stack align={'center'}>
-          <Heading fontSize={'4xl'}>Sign in to the dashboard</Heading>
-          <Text fontSize={'lg'} color={'gray.600'}>
-            to be enjoy full features
-          </Text>
+          <Heading fontSize={'4xl'}>Sign up to the dashboard</Heading>
         </Stack>
         <Box
           rounded={'lg'}
@@ -91,17 +88,9 @@ export default function SimpleCard() {
                 type="password"
               />
             </FormControl>
-            <Stack spacing={10}>
-              <Stack
-                direction={{ base: 'column', sm: 'row' }}
-                align={'start'}
-                justify={'space-between'}
-              >
-                <Checkbox>Remember me</Checkbox>
-                <Link color={'blue.400'}>Forgot password?</Link>
-              </Stack>
+            <Stack mt={5} spacing={10}>
               <Button
-                onClick={loginUser}
+                onClick={createUser}
                 isLoading={loading}
                 bg={'blue.400'}
                 color={'white'}
@@ -109,9 +98,16 @@ export default function SimpleCard() {
                   bg: 'blue.500',
                 }}
               >
-                Sign in
+                Register
               </Button>
             </Stack>
+            <Text>
+              Already have an Account?{' '}
+              <Link as={ReactLink} to="/" color={'#4299e1'}>
+                {' '}
+                Login
+              </Link>{' '}
+            </Text>
           </Stack>
         </Box>
       </Stack>

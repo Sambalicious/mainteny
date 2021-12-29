@@ -20,12 +20,12 @@ import {
   Input,
   ModalBody,
   ModalFooter,
-  HStack,
+  Box,
   Text,
 } from '@chakra-ui/react';
 import { Button, Flex, useToast } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import axiosInstance from '../utils/axios';
+import axiosInstance from '../utils/axiosInstance';
 
 const tableHeadings = [
   { text: 'Name', id: 1 },
@@ -51,7 +51,9 @@ const Students = () => {
         `/api/students?pageIndex=${pageIndex}&pageSize=3`
       );
       setData(response.data.Data);
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       return toast({
         title: error.response.data.message,
         //description: 'Something went wrong.',
@@ -60,8 +62,6 @@ const Students = () => {
         isClosable: true,
       });
     }
-
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -110,7 +110,7 @@ const Students = () => {
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Create new course</ModalHeader>
+            <ModalHeader>Create new student</ModalHeader>
             <ModalCloseButton />
             <ModalBody pb={6}>
               <FormControl>
@@ -143,6 +143,7 @@ const Students = () => {
             <ModalFooter>
               <Button
                 isLoading={loading}
+                disable={loading}
                 onClick={createStudent}
                 colorScheme="blue"
                 mr={3}
@@ -154,60 +155,71 @@ const Students = () => {
           </ModalContent>
         </Modal>
       )}
-      <Table variant="striped" colorScheme="blue">
-        {/* <TableCaption>Imperial to metric conversion factors</TableCaption> */}
-        <Thead>
-          <Tr>
-            {tableHeadings.map((header) => (
-              <Th isNumeric={header.id === 3} key={header.id}>
-                {header.text}{' '}
-              </Th>
-            ))}
-          </Tr>
-        </Thead>
 
-        <Tbody>
-          {data?.Students?.map((data) => (
-            <Tr
-              onClick={() => navigate({ pathname: `/students/${data.UserId}` })}
-              key={data.Email}
-              cursor={'pointer'}
+      {data?.Students?.length > 0 ? (
+        <Box>
+          <Table variant="striped" colorScheme="blue">
+            {/* <TableCaption>Imperial to metric conversion factors</TableCaption> */}
+            <Thead>
+              <Tr>
+                {tableHeadings.map((header) => (
+                  <Th isNumeric={header.id === 3} key={header.id}>
+                    {header.text}{' '}
+                  </Th>
+                ))}
+              </Tr>
+            </Thead>
+
+            <Tbody>
+              {data?.Students?.map((data) => (
+                <Tr
+                  onClick={() =>
+                    navigate({ pathname: `/students/${data.UserId}` })
+                  }
+                  key={data.Email}
+                  cursor={'pointer'}
+                >
+                  <Td>{data.Name}</Td>
+                  <Td>{data.Email}</Td>
+                  <Td isNumeric>{data.Courses?.length ?? 0} </Td>
+                </Tr>
+              ))}
+            </Tbody>
+
+            <Tfoot>
+              <Tr>
+                {tableHeadings.map((header) => (
+                  <Th isNumeric={header.id === 3} key={header.id}>
+                    {header.text}{' '}
+                  </Th>
+                ))}
+              </Tr>
+            </Tfoot>
+          </Table>
+
+          <Flex my={10} justify={'center'}>
+            <Button
+              disabled={data.CurrentPage === 1}
+              onClick={() => setPageIndex(pageIndex - 1)}
+              colorScheme={'blue'}
             >
-              <Td>{data.Name}</Td>
-              <Td>{data.Email}</Td>
-              <Td isNumeric>{data.Courses?.length ?? 0} </Td>
-            </Tr>
-          ))}
-        </Tbody>
-
-        <Tfoot>
-          <Tr>
-            {tableHeadings.map((header) => (
-              <Th isNumeric={header.id === 3} key={header.id}>
-                {header.text}{' '}
-              </Th>
-            ))}
-          </Tr>
-        </Tfoot>
-      </Table>
-
-      <Flex my={10} justify={'center'}>
-        <Button
-          disabled={data.CurrentPage === 1}
-          onClick={() => setPageIndex(pageIndex - 1)}
-          colorScheme={'blue'}
-        >
-          Prev{' '}
-        </Button>{' '}
-        <Button
-          disabled={data.CurrentPage === data.TotalPages}
-          onClick={() => setPageIndex(pageIndex + 1)}
-          ml={8}
-          colorScheme={'blue'}
-        >
-          Next
-        </Button>{' '}
-      </Flex>
+              Prev{' '}
+            </Button>{' '}
+            <Button
+              disabled={data.CurrentPage === data.TotalPages}
+              onClick={() => setPageIndex(pageIndex + 1)}
+              ml={8}
+              colorScheme={'blue'}
+            >
+              Next
+            </Button>{' '}
+          </Flex>
+        </Box>
+      ) : (
+        <Text textAlign={'center'} my={10}>
+          No student data yet. Please create a student
+        </Text>
+      )}
     </Layout>
   );
 };

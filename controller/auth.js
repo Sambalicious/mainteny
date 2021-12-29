@@ -1,6 +1,6 @@
 const Joi = require('joi');
 const { asyncMiddleware } = require('../middleware/AsyncMiddleware');
-const { Student } = require('../models');
+const { User } = require('../models');
 const { apiResponse } = require('../utils/apiResponse');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -33,11 +33,11 @@ exports.login = asyncMiddleware(async (req, res) => {
       .json(apiResponse({ code: 400, errorMessage: error.details[0].message }));
   }
 
-  let student = await Student.findOne({
+  let user = await User.findOne({
     where: { Email },
   });
 
-  if (!student) {
+  if (!user) {
     return res
       .status(400)
       .json(
@@ -45,7 +45,7 @@ exports.login = asyncMiddleware(async (req, res) => {
       );
   }
 
-  let validatedPassword = await decryptPassword(Password, student.Password);
+  let validatedPassword = await decryptPassword(Password, user.Password);
 
   if (!validatedPassword) {
     return res
@@ -53,12 +53,12 @@ exports.login = asyncMiddleware(async (req, res) => {
       .json(apiResponse({ code: 400, errorMessage: 'Invalid credentials' }));
   }
 
-  const token = jwt.sign({ student }, process.env.SECRET_TOKEN);
+  const token = jwt.sign({ user }, process.env.SECRET_TOKEN);
 
   return res.status(200).json(
     apiResponse({
       code: 200,
-      data: { Student: student, AccessToken: token },
+      data: { User: user, AccessToken: token },
     })
   );
 });
